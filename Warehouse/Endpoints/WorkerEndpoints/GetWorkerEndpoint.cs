@@ -1,35 +1,45 @@
 ﻿using FastEndpoints;
 using Microsoft.Extensions.Logging;
-using Contracts.Responses;
 using Entities.Models;
-using Warehouse.Mappers;
 using Contracts.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Contracts.Requests.Worker;
+using Warehouse.Mappers.WorkerMappers;
+using Contracts.Responses.Worker;
 
 namespace Warehouse.Endpoints.WorkerEndpoints
 {
-    [HttpGet("api/workers/{workerId}")]
-    public class GetWorkerEndpoint : Endpoint<int, WorkerDTO, WorkerMapper>
+    public class GetWorkerEndpoint : Endpoint<GetDeleteWorker, WorkerDTOWithDetails, WorkerDTOWithDetailsMapper>
     {
         private readonly IRepositoryWrapper _repository;
-        private readonly WorkerMapper _workerMapper;
 
-        public GetWorkerEndpoint(IRepositoryWrapper repository, WorkerMapper workerMapper)
+        public override void Configure()
         {
-            _workerMapper = workerMapper;
+            Get("api/workers/{Id}");
+            Description(b => b.WithTags("Worker"));
+            Summary(s =>
+            {
+                s.Summary = "Get worker with details";
+                s.Params["Id"] = "Worker unique identifier";
+            });
+        }
+
+        public GetWorkerEndpoint(IRepositoryWrapper repository)
+        {
             _repository = repository;
         }
 
-        public override async Task HandleAsync(int id, CancellationToken ct)
+        public override async Task HandleAsync(GetDeleteWorker getWorker, CancellationToken ct)
         {
-            Logger.LogDebug("Retrivering workers");
-            var worker = _repository.Worker.GetWorkerById(id);
+            Logger.LogDebug("Retrivering worker");
+            var worker = _repository.Worker.GetWorkerWithDetailsById(getWorker.Id);
 
             if (worker == null)
-                await SendNotFoundAsync();
+                await SendNotFoundAsync(cancellation: ct);
             else
             {
-                var workerDTO = _workerMapper.FromEntity(worker);
-                await SendAsync(workerDTO, cancellation: ct);
+                var workerDTOWithDetails = Map.FromEntity(worker);
+                await SendAsync(workerDTOWithDetails, cancellation: ct);
             }
         }
     }

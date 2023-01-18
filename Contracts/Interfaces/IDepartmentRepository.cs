@@ -11,7 +11,7 @@ namespace Contracts.Interfaces
     {
         IEnumerable<Department> GetAllDepartments();
         Department? GetDepartmentById(int id);
-        Department? GetDepartmentWithDetails(int id);
+        Department? GetDepartmentWithDetailsById(int id);
         void CreateDepartment(Department department);
         void UpdateDepartment(Department department);
         void DeleteDepartment(Department department);

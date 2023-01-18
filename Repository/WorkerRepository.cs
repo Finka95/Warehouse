@@ -33,7 +33,7 @@ namespace Repository
                 .FirstOrDefault();
         }
 
-        public Worker? GetWorkerWithDetails(int id)
+        public Worker? GetWorkerWithDetailsById(int id)
         {
             return FindByConditions(worker => worker.Id == id)
                 .Include(w => w.Departments)

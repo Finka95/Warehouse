@@ -11,16 +11,21 @@ namespace Repository
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private RepositoryContext _context;
-        private IWorkerRepository _workerRepository;
-        private IProductRepository _productRepository;
-        private IDepartmentRepository _departmentRepository;
+        private readonly RepositoryContext _context;
+        private IWorkerRepository? _workerRepository;
+        private IProductRepository? _productRepository;
+        private IDepartmentRepository? _departmentRepository;
+
+        public RepositoryWrapper(RepositoryContext context)
+        {
+            _context = context;
+        }
 
         public IWorkerRepository Worker
         {
             get
             {
-                if (_workerRepository == null) _workerRepository = new WorkerRepository(_context);
+                _workerRepository ??= new WorkerRepository(_context);
                 return _workerRepository;
             }
         }
@@ -29,7 +34,7 @@ namespace Repository
         {
             get
             {
-                if (_productRepository == null) _productRepository = new ProductRepository(_context);
+                _productRepository ??= new ProductRepository(_context);
                 return _productRepository;
             }
         }
@@ -38,7 +43,7 @@ namespace Repository
         {
             get
             {
-                if (_departmentRepository == null) _departmentRepository = new DepartmentRepository(_context);
+                _departmentRepository ??= new DepartmentRepository(_context);
                 return _departmentRepository;
             }
         }

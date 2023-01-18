@@ -1,19 +1,28 @@
 ﻿using FastEndpoints;
-using Contracts.Responses;
-using Warehouse.Mappers;
+using Warehouse.Mappers.WorkerMappers;
 using Contracts.Interfaces;
+using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Contracts.Responses.Worker;
 
-namespace Warehouse.Endpoints
+namespace Warehouse.Endpoints.WorkerEndpoints
 {
-    [HttpGet("api/workers")]
-    public class GetWorkersEndpoint : EndpointWithoutRequest<WorkersDTO>
+    public class GetWorkersEndpoint : EndpointWithoutRequest<WorkersDTO, WorkerDTOWithoutRequestMapper>
     {
         private readonly IRepositoryWrapper _repository;
-        private readonly WorkerMapper _workerMapper;
 
-        public GetWorkersEndpoint(IRepositoryWrapper repository, WorkerMapper workerMapper)
+        public override void Configure()
         {
-            _workerMapper = workerMapper;
+            Get("api/workers");
+            Description(b => b.WithTags("Worker"));
+            Summary(s =>
+            {
+                s.Summary = "Use this method to get all workers.";
+            });
+        }
+
+        public GetWorkersEndpoint(IRepositoryWrapper repository)
+        {
             _repository = repository;
         }
 
@@ -24,7 +33,7 @@ namespace Warehouse.Endpoints
 
             var workersDto = new WorkersDTO
             {
-                Workers = workers.Select(_workerMapper.FromEntity)
+                Workers = workers.Select(Map.FromEntity)
             };
 
             await SendAsync(workersDto, cancellation: ct);

@@ -32,7 +32,7 @@ namespace Repository
             return FindByConditions(d => d.Id == id).FirstOrDefault();
         }
 
-        public Department? GetDepartmentWithDetails(int id)
+        public Department? GetDepartmentWithDetailsById(int id)
         {
             return FindByConditions(d => d.Id == id)
                 .Include(d => d.Workers)

@@ -1,6 +1,6 @@
-﻿namespace Contracts.Responses
+﻿namespace Contracts.Responses.Worker
 {
-    public class WorkersDTO
+    public record WorkersDTO
     {
         public IEnumerable<WorkerDTO>? Workers { get; set; }
     }

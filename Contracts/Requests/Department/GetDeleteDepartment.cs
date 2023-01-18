@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contracts.Requests
+namespace Contracts.Requests.Department
 {
-    public class CreateDepartment
+    public record GetDeleteDepartment
     {
+        public int Id { get; init; }
     }
 }

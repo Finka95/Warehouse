@@ -2,26 +2,26 @@ using Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Entities;
 using Repository;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddFastEndpoints();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDoc();
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 builder.Services.AddDbContext<RepositoryContext>(opt => opt.UseSqlServer(config.GetConnectionString("MsSqlConnection")));
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseDefaultExceptionHandler();
+app.UseAuthorization();
+app.UseFastEndpoints(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+    c.Endpoints.Configurator = edp => edp.AllowAnonymous();
+});
+app.UseSwaggerGen();
 app.UseHttpsRedirection();
 
 app.Run();

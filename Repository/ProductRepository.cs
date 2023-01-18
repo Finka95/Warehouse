@@ -1,6 +1,7 @@
 ﻿using Contracts.Interfaces;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,13 @@ namespace Repository
         public Product? GetProductById(int id)
         {
             return FindByConditions(p => p.Id == id)
+                .FirstOrDefault();
+        }
+
+        public Product? GetProductWithDetailsById(int id)
+        {
+            return FindByConditions(p => p.Id == id)
+                .Include(p => p.Department)
                 .FirstOrDefault();
         }
     }

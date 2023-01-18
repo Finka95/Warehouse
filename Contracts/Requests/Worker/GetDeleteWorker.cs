@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contracts.Requests
+namespace Contracts.Requests.Worker
 {
-    public class CreateWorker
+    public record GetDeleteWorker
     {
+        public int Id { get; init; }
     }
 }

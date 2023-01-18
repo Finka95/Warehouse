@@ -11,7 +11,7 @@ namespace Contracts.Interfaces
     {
         IEnumerable<Worker> GetAllWorkers();
         Worker? GetWorkerById(int id);
-        Worker? GetWorkerWithDetails(int id);
+        Worker? GetWorkerWithDetailsById(int id);
         void CreateWorker(Worker worker);
         void UpdateWorker(Worker worker);
         void DeleteWorker(Worker worker);
