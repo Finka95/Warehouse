@@ -13,7 +13,7 @@ namespace Warehouse.Endpoints.ProductEndpoints
 
         public override void Configure()
         {
-            Put("api/products");
+            Put("api/products/{Id}");
             Description(b => b.WithTags("Product"));
             Summary(s =>
             {

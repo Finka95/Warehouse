@@ -12,7 +12,7 @@ namespace Warehouse.Endpoints.DepartmentEndpoints
 
         public override void Configure()
         {
-            Put("api/departments");
+            Put("api/departments/{Id}");
             Description(b => b.WithTags("Department"));
             Summary(s =>
             {

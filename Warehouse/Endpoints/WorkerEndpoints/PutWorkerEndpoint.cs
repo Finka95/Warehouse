@@ -15,7 +15,7 @@ namespace Warehouse.Endpoints.WorkerEndpoints
 
         public override void Configure()
         {
-            Put("api/workers");
+            Put("api/workers/{Id}");
             Description(b => b.WithTags("Worker"));
             Summary(s =>
             {
