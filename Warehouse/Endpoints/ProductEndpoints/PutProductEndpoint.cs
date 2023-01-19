@@ -13,7 +13,7 @@ namespace Warehouse.Endpoints.ProductEndpoints
 
         public override void Configure()
         {
-            Put("api/products");
+            Put("api/products/{Id}");
             Description(b => b.WithTags("Product"));
             Summary(s =>
             {
@@ -42,9 +42,10 @@ namespace Warehouse.Endpoints.ProductEndpoints
                 if (departmentDBWithDetails == null)
                 {
                     await SendStringAsync("No such department in the database.", statusCode: 404, cancellation: ct);
-                    productDBWithDetails!.Department = departmentDBWithDetails;
                     return;
                 }
+                productDBWithDetails!.Department = departmentDBWithDetails;
+                productDBWithDetails!.DepartmentId = departmentDBWithDetails!.Id;
             }
 
             productDBWithDetails = Map.UpdateEntity(product, productDBWithDetails!);
